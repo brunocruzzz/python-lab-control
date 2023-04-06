@@ -1,0 +1,17 @@
+# ignore virtual environment folder
+venv/
+.env/
+# ignore compiled Python files
+*.pyc
+*.pyo
+
+# ignore egg-info directories
+*.egg-info/
+
+# ignore build artifacts
+build/
+dist/
+
+# ignore sensitive files
+config.ini
+credentials.json
