@@ -18,5 +18,6 @@ output = stdout.readlines()
 print(output)
 
 
-#Ends the connection
+#Messages and ends the connection
+print("Connection ended.")
 ssh.close()
