@@ -1,23 +1,77 @@
 import paramiko
 import getpass
-# specify the host information
-host = ""
-port = 22
-username = ""
-passwd = getpass.getpass("Password: ")
+import configparser
 
-ssh = paramiko.SSHClient()
-print(f"Trying to --> ssh {username}@{host}:{port}")
-ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-ssh.connect(hostname=host, username=username, password=passwd,port=port)
+class SSHConfiguration:
+    def __init__(self, config_file):
+        self.config = configparser.ConfigParser()
+        self.config.read(config_file)
+        self.host = self.config['DEFAULT']['host']
+        self.port = self.config.getint('DEFAULT', 'port')
+        self.username = self.config['DEFAULT']['username']
+        self.private_key_path = self.config['DEFAULT']['private_key_path']
+        self.password = self.config['DEFAULT']['password']
 
-stdin, stdout, stderr = ssh.exec_command('ls -l')
-output = stdout.readlines()
+    def get_password(self):
+        if not self.password:
+            self.password = getpass.getpass("Password: ")
+        return self.password
 
-# print the output of the command
-print(output)
+
+class SSHClient:
+    def __init__(self, config):
+        self.config = config
+        self.client = paramiko.SSHClient()
+        self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+    def connect(self):
+        try:
+            self.client.connect(
+                hostname=self.config.host,
+                username=self.config.username,
+                password=self.config.get_password(),    
+                port=self.config.port
+            )
+            print("Connected successfully!")
+        except paramiko.AuthenticationException:
+            print("Authentication failed. Please check your credentials.")
+        except paramiko.SSHException as ssh_ex:
+            print(f"Unable to establish SSH connection: {ssh_ex}")
+        except Exception as ex:
+            print(f"An error occurred: {ex}")
+
+    def execute_command(self, command):
+        stdin, stdout, stderr = self.client.exec_command(command)
+        output = stdout.read().decode('utf-8')
+        error = stderr.read().decode('utf-8')
+        return f"{output}  -  {error}"
+
+    def close(self):
+        self.client.close()
+
+def main():
+    config = SSHConfiguration('config.ini')
+
+    ssh = SSHClient(config)
+
+    try:
+        print(f"Trying to ssh {config.username}@{config.host}:{config.port}")
+        ssh.connect()
+        output = ssh.execute_command('hostname')
+        print(output)
+        while True:
+            command = input("Enter a command to execute (type '!exit' to quit): ")
+            if command == "!exit":
+                break
+
+            output = ssh.execute_command(command)
+            print(output)
+
+    finally:
+        ssh.close()
+
+    print("Connection ended.")
 
 
-#Messages and ends the connection
-print("Connection ended.")
-ssh.close()
+if __name__ == '__main__':
+    main()
