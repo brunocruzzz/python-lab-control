@@ -172,7 +172,7 @@ def main():
                     break
                 elif command == "!pubkey":
                     print('Em implementação')
-                #command = f"printf 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCi6K02jP5EAwCClQepmgoD6ru/Xs1C55KyOAuWDMptDX+ovM8WTsFeYMBB2gV6r1iTcD0ablqLRaEVRVKH669pztekbNcM+LfoJqWO9Lnv/QCJeC8qdqDpT0ZuS+3WyvW6sJ0MAKxR9Y5AOw49zx94IXJLMzNKUH7QlW8GS1wO17nP+uJlQAaKgFkAiQZjb4767t5sh311lj7sywdLvXrT22HEfBgWhKVPA1xUIdD+pPHSv1e+alV47TdQPIt5ABdmX4MxfKS/dyWu+OGkwDq6+++B+SFywej8rLhyRhxCY3F4ZH+xt6ZHahgiPA/N5PQ+DM0ZwHhtuDLpdtjfM7Gx\n' >> ~/.ssh/authorized_keys"
+                #command = f"printf 'ssh-rsa {PUBKEY_HERE}\n' >> ~/.ssh/authorized_keys"
                 elif command == '!--addserver':
                     print('Abrindo configurador para registrar novo servidor--->Em implementação')
                     subprocess.call(['python', './setup_config.py', '--addserver'])
