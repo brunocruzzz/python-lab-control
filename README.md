@@ -3,7 +3,7 @@ python-lab-control is a powerful Python script designed to facilitate the manage
 
 Key Features:
 
-PUBKEY Connection: python-lab-control promotes secure connections by utilizing SSH with public key authentication. This ensures a robust and secure communication channel between the controlling machine and the target machines in the laboratory.
+(Future implementation) PUBKEY Connection: python-lab-control promotes secure connections by utilizing SSH with public key authentication. This ensures a robust and secure communication channel between the controlling machine and the target machines in the laboratory.
 
 Efficient Management: The script streamlines the process of managing a computer laboratory by automating the execution of commands across multiple machines. With a pre-defined list of hosts, the script iterates through them, establishes SSH connections, and executes commands seamlessly.
 
